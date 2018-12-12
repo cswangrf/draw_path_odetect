@@ -1,5 +1,6 @@
 from Views.Views import *
 from tkinter import *
+from Models.Filters import Filter
 
 class Filters:
     # TODO: build class that get the filters data from the user
@@ -7,7 +8,6 @@ class Filters:
     pass
 
 
-my_window = Tk()
 
 # add paths to the gui, show them in table or in the picture
 def add_paths_to_gui(needed_paths):
@@ -25,21 +25,25 @@ def add_paths_to_gui(needed_paths):
 def build_filters_gui():
     # TODO: build GUI interface get the filters from user,
     # TODO: send him back to the models to process them
-    filters = "fsdfsdfdsfs"
+    f= Filter()
+    f.locate_time("11:00:00", "11:03:00")
+
     window = Tk()
     window.title("Welcome to LikeGeeks app")
-    window.geometry('350x200')
+    window.geometry('1000x1000')
+
     lbl = Label(window, text="Hello")
     lbl.grid(column=0, row=0)
     btn = Button(window, text="Click Me")
     btn.grid(column=1, row=0)
-    filters = show_filters_gui(window, filters)
+    filters = show_filters_gui(window)
+    global my_window
     my_window = window
     return filters
 
 
 # send filters to the models,
-def process_filters_controller(needed_file, filters):
+def process_filters_controller(needed_file):
     # TODO: send filters to the models,
     # TODO: get the requested paths
     # TODO: and send them to the GUI builder

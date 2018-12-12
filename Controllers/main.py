@@ -1,9 +1,11 @@
-from Controllers.UploadingFileController import *
+from Controllers.UploadingFileController import UpdateData
+
 
 # main function: our project start here
 def main():
     print("python main function")
-    building_upload_gui()
+    ud = UpdateData()
+    ud.building_upload_gui()
 
 
 if __name__ == '__main__':
