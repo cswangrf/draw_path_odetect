@@ -1,4 +1,4 @@
-from Controllers.UploadingFile import *
+from Controllers.UploadingFileController import *
 
 # main function: our project start here
 def main():
