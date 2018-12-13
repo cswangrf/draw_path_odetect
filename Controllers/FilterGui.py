@@ -101,10 +101,10 @@ class Ui_MainWindow(object):
     def get_filters(self):
         fil = {"f1": self.checkBox.checkState(), "f2": self.checkBox_2.checkState(),
                "f3": self.checkBox_3.checkState(), "f4": self.checkBox_4.checkState()}
-        print(self.timeEdit.text())
-        # for filter_name, status in fil:
-        #     if status != 0:
-        #         if filter_name == "f1" :
+        for filter_name, status in fil:
+            if status != 0:
+                if filter_name == "f1" :
+                    print(self.timeEdit.text())
 
 
 
