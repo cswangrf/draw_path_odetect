@@ -4,8 +4,6 @@ import pandas as pd
 
 
 class Filter:
-
-
     def __init__(self):
         print("start filter")
         self.bg = imread("../paths0.png")

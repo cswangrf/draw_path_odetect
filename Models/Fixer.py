@@ -2,10 +2,11 @@ import pandas as pd
 
 
 class Fixer:
-
-    def fix_file(self, path):
+    def __init__(self,path):
+        self.path=path
+    def fix_file(self):
         counter = 0
-        with open(path) as input, open('../data/fixed.csv', 'w') as output:
+        with open(self.path) as input, open('../data/fixed.csv', 'w') as output:
             output.write("frameNum,x,y,objectNum,size,sequenceNum,TBD,TBD,TBD,filename,time,path time,delta time,TBD\n")
             for line in input:
                 items = line.split(',')  # items is a list of strings

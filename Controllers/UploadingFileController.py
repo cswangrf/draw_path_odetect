@@ -1,8 +1,14 @@
+import threading
+import tkinter
+from time import sleep
+from tkinter.ttk import Progressbar
+
 from Models.Fixer import Fixer
 from Controllers.FiltersController import *
 from Views.Views import *
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, ttk
+
 
 class UpdateData:
 
@@ -25,6 +31,7 @@ class UpdateData:
         # TODO: send file to the models to build the needed CSV OR Data Base
         # ToDO: receive data after all the changes,
         # GO TO MODELS TO PROCESS THE FILE
+        main_win.destroy()
         filters = build_filters_gui()
         process_filters_controller(filters)
 
@@ -33,11 +40,19 @@ class UpdateData:
     # Arrange unneeded data
     # Send new file to the connector with the data base
     def get_file_from_user(self):
-        # TODO: delete all the ERROR DATA
-        # TODO: delete unneeded columns
-        f = Fixer()
-        new_file = f.fix_file(main_win.source_path_file) # get from the file a new file
+        progress = ttk.Progressbar(main_win, length=500)
+        progress.place(x=0, y=350)
+        n = Fixer(main_win.source_path_file)
+        f = threading.Thread(target=n.fix_file)
+        f.start()
+        while f.is_alive():
+            progress['value'] += 0.0004
+            main_win.update()
         self.build_data_base_controller()
+
+
+         # get from the file a new file
+
 
 
     # Building the first Gui
@@ -58,7 +73,9 @@ class UpdateData:
         lbl1= Label(main_win, text="Hello!!")
         lbl1.grid(column=0, row=0)
         MyButton1 = Button(main_win, text="Submit", width=10, command=self.get_file_from_user)
+        MyButton2 = Button(main_win, text="Lastfile", width=10, command=self.build_data_base_controller)
         MyButton1.place(x=400, y=400)
+        MyButton2.place(x=400, y=350)
         show_uploading_gui(main_win)
 
 
