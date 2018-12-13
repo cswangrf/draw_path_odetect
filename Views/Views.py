@@ -10,7 +10,5 @@ def show_uploading_gui(window):
 # show the gui to the user and gets
 # the chosen filters
 def show_filters_gui(window):
-    window.mainloop()
-    # TODO: get the file filters from the user
-    filters = "sdasd"
+
     return filters
