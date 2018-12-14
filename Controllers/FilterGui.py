@@ -69,7 +69,14 @@ class Ui_MainWindow(object):
         self.lineEdit_4.setObjectName("lineEdit_4")
 
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(490, 580, 75, 23))
+        self.pushButton.setGeometry(QtCore.QRect(500, 590, 75, 23))
+
+        self.pushButton1 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton1.setGeometry(QtCore.QRect(400, 590, 75, 23))
+
+        self.pushButton2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton2.setGeometry(QtCore.QRect(300, 590, 75, 23))
+
         self.pushButton.setObjectName("pushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -80,11 +87,13 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.pushButton.clicked.connect(lambda: self.get_filters())
-        self.retranslateUi(MainWindow)
-        self.m = PlotCanvas(main_df.head(1), MainWindow, width=5, height=4)# why main_df.head(1)!!!!!!
-        self.m.move(40, 150)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.retranslateUi(MainWindow)
+        self.m = PlotCanvas(main_df.head(1), MainWindow, width=5, height=4)  # why main_df.head(1)!!!!!!
+        self.m.move(40, 150)
+        self.pushButton1.clicked.connect(lambda: self.m.next_plot())
+        self.pushButton2.clicked.connect(lambda: self.m.back_plot())
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -100,6 +109,8 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "X2"))
         self.label_6.setText(_translate("MainWindow", "Y2"))
         self.pushButton.setText(_translate("MainWindow", "OK"))
+        self.pushButton1.setText(_translate("MainWindow", "Next"))
+        self.pushButton2.setText(_translate("MainWindow", "Back"))
 
     def get_filters(self):
         fil = {"f1": self.checkBox.checkState(), "f2": self.checkBox_2.checkState(),
@@ -157,34 +168,57 @@ def start():
 
 
 # *****************************************Omair classes*********************************
+
 class PlotCanvas(FigureCanvas):
 
     def __init__(self, m, parent=None, width=5, height=4, dpi=110):
         self.fig = Figure(figsize=(width, height), dpi=dpi)
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
+        self.objs = m
+        self.p = -1
         self.plot(m)
+        self.color=['red', 'black', 'blue', 'brown', 'green']
 
     def plot(self, pln):
-        global objs, df_by_obj
-        objs = pln.groupby(['filename', 'objectNum']).size()
+        global df_by_obj
+        self.p = -1
+        self.objs = pln.groupby(['filename', 'objectNum']).size()
         ax = self.figure.add_subplot(111)
         ax.cla()
         ax.imshow(bg)
         ax.set_title('Hamada')
-        for t, n in objs.iteritems():
+        for t, n in self.objs.iteritems():
             o = df_by_obj.loc[t]
             ax.plot(o.x, o.y)
         self.draw()
 
     def next_plot(self):
-        global objs, df_by_obj
-        objs = self.pln.groupby(['filename', 'objectNum']).size()
-
+        global df_by_obj
         ax = self.figure.add_subplot(111)
-        ax.imshow(bg)
         ax.set_title('Hamada')
-        for t, n in objs.iteritems():
-            o = df_by_obj.loc[t]
-            self.draw
-            yield ax.plot(o.x, o.y)
+        ax.cla()
+        ax.imshow(bg)
+        self.p += 1
+        print(self.objs.index[self.p],"8888888888888888")
+        o = df_by_obj.loc[self.objs.index[self.p]]
+        ax.plot(o.x, o.y,color=self.color[self.p%5])
+        self.draw()
+        print(len(self.objs))
+        self.p%=len(self.objs-1)
+
+    def back_plot(self):
+        global df_by_obj
+        if self.p>0:
+            ax = self.figure.add_subplot(111)
+            ax.set_title('Hamada')
+            ax.cla()
+            ax.imshow(bg)
+            self.p -= 1
+            print(self.objs.index[self.p],"8888888888888888")
+            o = df_by_obj.loc[self.objs.index[self.p]]
+            ax.plot(o.x, o.y,color=self.color[self.p])
+            self.draw()
+
+
+
