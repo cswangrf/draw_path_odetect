@@ -3,7 +3,7 @@ import sys
 from settings import df_by_obj, bg
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib.pyplot import imshow
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, patches
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from Models.Filters import *
@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(631, 644)
+        MainWindow.resize(1000, 680)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
@@ -69,13 +69,13 @@ class Ui_MainWindow(object):
         self.lineEdit_4.setObjectName("lineEdit_4")
 
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(500, 590, 75, 23))
+        self.pushButton.setGeometry(QtCore.QRect(450, 50, 75, 23))
 
         self.pushButton1 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton1.setGeometry(QtCore.QRect(400, 590, 75, 23))
+        self.pushButton1.setGeometry(QtCore.QRect(500, 590, 75, 23))
 
         self.pushButton2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton2.setGeometry(QtCore.QRect(300, 590, 75, 23))
+        self.pushButton2.setGeometry(QtCore.QRect(400, 590, 75, 23))
 
         self.pushButton.setObjectName("pushButton")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -89,8 +89,8 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(lambda: self.get_filters())
 
         self.retranslateUi(MainWindow)
-        self.m = PlotCanvas(main_df.head(1), MainWindow, width=5, height=4)  # why main_df.head(1)!!!!!!
-        self.m.move(40, 150)
+        self.m = PlotCanvas(main_df.head(1), MainWindow, width=5, height=3)  # why main_df.head(1)!!!!!!
+        self.m.move(150, 150)
         self.pushButton1.clicked.connect(lambda: self.m.next_plot())
         self.pushButton2.clicked.connect(lambda: self.m.back_plot())
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.checkBox.setText(_translate("MainWindow", "Time Filter"))
-        self.checkBox_2.setText(_translate("MainWindow", "Date And Time Filter"))
+        self.checkBox_2.setText(_translate("MainWindow", "Date Filter"))
         self.checkBox_3.setText(_translate("MainWindow", "Location Filter"))
         self.checkBox_4.setText(_translate("MainWindow", "Choose Boxs Filter"))
         self.label.setText(_translate("MainWindow", "Start Time"))
@@ -111,6 +111,8 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "OK"))
         self.pushButton1.setText(_translate("MainWindow", "Next"))
         self.pushButton2.setText(_translate("MainWindow", "Back"))
+        self.pushButton1.hide()
+        self.pushButton2.hide()
 
     def get_filters(self):
         fil = {"f1": self.checkBox.checkState(), "f2": self.checkBox_2.checkState(),
@@ -127,10 +129,6 @@ class Ui_MainWindow(object):
                     dr["time_filter"] = s
                 elif filter_name == "f2":
                     s["date"] = str(self.dateEdit.text())
-                    s1 = str(self.timeEdit.text()) + ":00"
-                    s["start_time"] = s1
-                    s1 = str(self.timeEdit_2.text()) + ":00"
-                    s["end_time"] = s1
                     dr["date_filter"] = s
                 elif filter_name == "f3":
                     s["x1"] = int(self.lineEdit.text())
@@ -140,8 +138,9 @@ class Ui_MainWindow(object):
                     dr["location_filter"] = s
 
         print("Hiiiiiii!")
-        # plots(arguments_receiver_and_filter(dr))
         self.m.plot(arguments_receiver_and_filter(dr))
+        self.pushButton1.show()
+        self.pushButton2.show()
         print("Byeeeeee!")
 
 
@@ -171,14 +170,15 @@ def start():
 
 class PlotCanvas(FigureCanvas):
 
-    def __init__(self, m, parent=None, width=5, height=4, dpi=110):
+    def __init__(self, m, parent=None, width=5, height=4, dpi=140):
         self.fig = Figure(figsize=(width, height), dpi=dpi)
         FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
-        self.objs = m
+        self.objs = m.groupby(['filename', 'objectNum']).size()
         self.p = -1
         self.plot(m)
-        self.color=['red', 'black', 'blue', 'brown', 'green']
+        self.color = ['red', 'black', 'blue', 'brown', 'green']
+        # self.squares()
 
     def plot(self, pln):
         global df_by_obj
@@ -199,26 +199,35 @@ class PlotCanvas(FigureCanvas):
         ax.set_title('Hamada')
         ax.cla()
         ax.imshow(bg)
+        if self.p == len(self.objs) - 1:
+            self.p = self.p % (len(self.objs) - 1) - 1
         self.p += 1
-        print(self.objs.index[self.p],"8888888888888888")
+        print(self.objs.index[self.p], "8888888888888888")
         o = df_by_obj.loc[self.objs.index[self.p]]
-        ax.plot(o.x, o.y,color=self.color[self.p%5])
+        ax.plot(o.x, o.y, color=self.color[self.p % 5])
         self.draw()
         print(len(self.objs))
-        self.p%=len(self.objs-1)
 
     def back_plot(self):
         global df_by_obj
-        if self.p>0:
-            ax = self.figure.add_subplot(111)
-            ax.set_title('Hamada')
-            ax.cla()
-            ax.imshow(bg)
-            self.p -= 1
-            print(self.objs.index[self.p],"8888888888888888")
-            o = df_by_obj.loc[self.objs.index[self.p]]
-            ax.plot(o.x, o.y,color=self.color[self.p])
-            self.draw()
+        if self.p == -1 or self.p == 0:
+            self.p = len(self.objs)
+        ax = self.figure.add_subplot(111)
+        ax.set_title('Hamada')
+        ax.cla()
+        ax.imshow(bg)
+        self.p -= 1
+        print(self.objs.index[self.p], "8888888888888888")
+        o = df_by_obj.loc[self.objs.index[self.p]]
+        ax.plot(o.x, o.y, color=self.color[self.p % 5])
+        self.draw()
 
+    def squares(self):
+        ax = self.figure.add_subplot(111)
+        ax.set_title('Hamada')
+        ax.cla()
+        ax.imshow(bg)
+        ax.add_patch(patches.Rectangle((50,100),40,30,linewidth=1,edgecolor='r',facecolor='none'))
+        ax.show()
 
 

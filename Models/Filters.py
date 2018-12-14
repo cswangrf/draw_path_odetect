@@ -51,30 +51,23 @@ class AbstractDataFrameDecorator(AbstractDataFrame):
 
 class FilterByDateAndTime(AbstractDataFrameDecorator):
 
-    def __init__(self, decorated_data_frame, specific_date, from_time, to_time):
+    def __init__(self, decorated_data_frame, specific_date):
         AbstractDataFrameDecorator.__init__(self, decorated_data_frame)
         self.specific_date = specific_date
-        self.from_time = from_time
-        self.to_time = to_time
 
     def filter(self):
         global decorated_df
         self.decorated_data_frame.filter()
-        date_time1 = pd.to_datetime(self.specific_date + ' ' + self.from_time)
-        date_time2 = pd.to_datetime(self.specific_date + ' ' + self.to_time)
-        print("time:", date_time1, date_time2)
-        print(decorated_df.time.dt.date, date_time1.date(), "dates@!!!!")
+        date_time1 = pd.to_datetime(self.specific_date)
+        date_time2 = pd.to_datetime(self.specific_date)
         print(len(decorated_df), "*********0*********")
-
         decorated_df = decorated_df[decorated_df.time.dt.date == date_time1.date()]
         print(len(decorated_df), "*********1*********")
-        decorated_df = decorated_df[
-            (decorated_df.time.dt.time >= date_time1.time()) & (decorated_df.time.dt.time <= date_time2.time())]
-        print(len(decorated_df), "********2**********")
+
 
     def get_filter_name(self):
-        print('Filter by date and time')
-        return 'Filter by date and time'
+        print('Filter by date')
+        return 'Filter by date'
 
 
 class FilterByTime(AbstractDataFrameDecorator):
@@ -135,9 +128,7 @@ def arguments_receiver_and_filter(argument_dictionary):
 
         if arg == 'date_filter':
             date = argument_dictionary[arg]['date']
-            start_time = argument_dictionary[arg]['start_time']
-            end_time = argument_dictionary[arg]['end_time']
-            concrete_data_frame = FilterByDateAndTime(concrete_data_frame, date, start_time, end_time)
+            concrete_data_frame = FilterByDateAndTime(concrete_data_frame, date)
 
         if arg == 'location_filter':
             print(argument_dictionary[arg])
