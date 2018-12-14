@@ -1,11 +1,11 @@
 import sys
 
-from settings import df_by_obj,bg
+from settings import df_by_obj, bg
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib.pyplot import imshow
 from matplotlib import pyplot as plt
-
-import resources
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 from Models.Filters import *
 
 
@@ -67,9 +67,7 @@ class Ui_MainWindow(object):
         self.lineEdit_4 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_4.setGeometry(QtCore.QRect(290, 80, 21, 20))
         self.lineEdit_4.setObjectName("lineEdit_4")
-        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(10, 150, 661, 391))
-        self.textBrowser.setObjectName("textBrowser")
+
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(490, 580, 75, 23))
         self.pushButton.setObjectName("pushButton")
@@ -83,7 +81,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.pushButton.clicked.connect(lambda: self.get_filters())
         self.retranslateUi(MainWindow)
+        self.m = PlotCanvas(main_df.head(1), MainWindow, width=5, height=4)# why main_df.head(1)!!!!!!
+        self.m.move(40, 150)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -99,12 +100,6 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "X2"))
         self.label_6.setText(_translate("MainWindow", "Y2"))
         self.pushButton.setText(_translate("MainWindow", "OK"))
-        self.textBrowser.setHtml(_translate("MainWindow",
-                                            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                                            "p, li { white-space: pre-wrap; }\n"
-                                            "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-                                            "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/paths0.png\" /></p></body></html>"))
 
     def get_filters(self):
         fil = {"f1": self.checkBox.checkState(), "f2": self.checkBox_2.checkState(),
@@ -134,7 +129,8 @@ class Ui_MainWindow(object):
                     dr["location_filter"] = s
 
         print("Hiiiiiii!")
-        plots(arguments_receiver_and_filter(dr))
+        # plots(arguments_receiver_and_filter(dr))
+        self.m.plot(arguments_receiver_and_filter(dr))
         print("Byeeeeee!")
 
 
@@ -158,3 +154,37 @@ def start():
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
+
+# *****************************************Omair classes*********************************
+class PlotCanvas(FigureCanvas):
+
+    def __init__(self, m, parent=None, width=5, height=4, dpi=110):
+        self.fig = Figure(figsize=(width, height), dpi=dpi)
+        FigureCanvas.__init__(self, self.fig)
+        self.setParent(parent)
+        self.plot(m)
+
+    def plot(self, pln):
+        global objs, df_by_obj
+        objs = pln.groupby(['filename', 'objectNum']).size()
+        ax = self.figure.add_subplot(111)
+        ax.cla()
+        ax.imshow(bg)
+        ax.set_title('Hamada')
+        for t, n in objs.iteritems():
+            o = df_by_obj.loc[t]
+            ax.plot(o.x, o.y)
+        self.draw()
+
+    def next_plot(self):
+        global objs, df_by_obj
+        objs = self.pln.groupby(['filename', 'objectNum']).size()
+
+        ax = self.figure.add_subplot(111)
+        ax.imshow(bg)
+        ax.set_title('Hamada')
+        for t, n in objs.iteritems():
+            o = df_by_obj.loc[t]
+            self.draw
+            yield ax.plot(o.x, o.y)
