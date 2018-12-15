@@ -31,14 +31,7 @@ class UpdateData:
         # ToDO: receive data after all the changes,
         main_win.destroy()
         FilterGui.start()
-        # GO TO MODELS TO PROCESS THE FILE
-        # main_win.destroy()
-        # filters = build_filters_gui()
-        # process_filters_controller(filters)
 
-    # Get the file link from the user
-    # Arrange unneeded data
-    # Send new file to the connector with the data base
     def get_file_from_user(self):
         progress = ttk.Progressbar(main_win, length=500)
         progress.place(x=0, y=350)
@@ -48,13 +41,11 @@ class UpdateData:
         while f.is_alive():
             progress['value'] += 0.0004
             main_win.update()
+        progress['value'] = 100
         self.build_data_base_controller()
 
-        # get from the file a new file
 
-    # Building the first Gui
-    # That includes the uploading
-    # CSV file to the project
+
     def building_upload_gui(self):
         global main_win
         main_win = Tk()

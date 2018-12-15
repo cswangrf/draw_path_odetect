@@ -155,37 +155,41 @@ class FilterByMultiLocation(AbstractDataFrameDecorator):
         return 'Filter by multi location'
 
 
-def arguments_receiver_and_filter(argument_dictionary):
-    print("im' here")
-    concrete_data_frame = ConcreteDataFrame()
-    for arg in argument_dictionary.keys():
-        print(arg)
-        if arg == 'time_filter':
-            start_time = argument_dictionary[arg]['start_time']
-            print("start time: ", start_time)
-            end_time = argument_dictionary[arg]['end_time']
-            print("end time:", end_time)
-            concrete_data_frame = FilterByTime(concrete_data_frame, start_time, end_time)
+class Arguments_Receiver_And_Filter:
+    def __init__(self,argument_dictionary):
+        self.argument_dictionary=argument_dictionary
 
-        if arg == 'date_filter':
-            date = argument_dictionary[arg]['date']
-            concrete_data_frame = FilterByDateAndTime(concrete_data_frame, date)
+    def arguments_receiver_and_filter(self):
+        print("im' here")
+        concrete_data_frame = ConcreteDataFrame()
+        for arg in self.argument_dictionary.keys():
+            print(arg)
+            if arg == 'time_filter':
+                start_time = self.argument_dictionary[arg]['start_time']
+                print("start time: ", start_time)
+                end_time = self.argument_dictionary[arg]['end_time']
+                print("end time:", end_time)
+                concrete_data_frame = FilterByTime(concrete_data_frame, start_time, end_time)
 
-        if arg == 'location_filter':
-            print(argument_dictionary[arg])
-            p1_x = int(argument_dictionary[arg]['x1'])
-            p1_y = int(argument_dictionary[arg]['y1'])
-            p2_x = int(argument_dictionary[arg]['x2'])
-            p2_y = int(argument_dictionary[arg]['y2'])
-            print("coordiantes:", p1_x, p1_y, p2_x, p2_y)
-            concrete_data_frame = FilterByLocation(concrete_data_frame, (p1_x, p1_y), (p2_x, p2_y))
-            print(len(decorated_df))
-        if arg == 'multi_location_filter':
-            print(argument_dictionary[arg]['set_of_coordinates'], "*********************")
-            concrete_data_frame = FilterByMultiLocation(concrete_data_frame,
-                                                        argument_dictionary[arg]['set_of_coordinates'])
-            print("TTTTTTTTTTTTT")
+            if arg == 'date_filter':
+                date = self.argument_dictionary[arg]['date']
+                concrete_data_frame = FilterByDateAndTime(concrete_data_frame, date)
 
-    concrete_data_frame.filter()
-    print(len(decorated_df))
-    return decorated_df
+            if arg == 'location_filter':
+                print(self.argument_dictionary[arg])
+                p1_x = int(self.argument_dictionary[arg]['x1'])
+                p1_y = int(self.argument_dictionary[arg]['y1'])
+                p2_x = int(self.argument_dictionary[arg]['x2'])
+                p2_y = int(self.argument_dictionary[arg]['y2'])
+                print("coordiantes:", p1_x, p1_y, p2_x, p2_y)
+                concrete_data_frame = FilterByLocation(concrete_data_frame, (p1_x, p1_y), (p2_x, p2_y))
+                print(len(decorated_df))
+            if arg == 'multi_location_filter':
+                print(self.argument_dictionary[arg]['set_of_coordinates'], "*********************")
+                concrete_data_frame = FilterByMultiLocation(concrete_data_frame,
+                                                            self.argument_dictionary[arg]['set_of_coordinates'])
+                print("TTTTTTTTTTTTT")
+
+        concrete_data_frame.filter()
+        print(len(decorated_df))
+        return decorated_df

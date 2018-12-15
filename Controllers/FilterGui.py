@@ -1,5 +1,7 @@
 import sys
-
+# from threading import Thread
+import time
+from multiprocessing.pool import ThreadPool
 from PyQt5.QtGui import QPixmap, QImage, QPalette, QBrush
 from PyQt5.QtWidgets import QLabel
 
@@ -16,16 +18,17 @@ from PyQt5.QtCore import QSize
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 680)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.MainWindow = MainWindow
+        self.MainWindow.setObjectName("MainWindow")
+        self.MainWindow.resize(1000, 680)
+        self.centralwidget = QtWidgets.QWidget(self.MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         oImage = QImage("../oddetect.jpg")
         sImage = oImage.scaled(QSize(1000, 680))
         palette = QPalette()
         palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
-        MainWindow.setPalette(palette)
+        self.MainWindow.setPalette(palette)
 
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox.setGeometry(QtCore.QRect(10, 20, 70, 17))
@@ -84,7 +87,6 @@ class Ui_MainWindow(object):
         self.label_8.setGeometry(QtCore.QRect(500, 110, 111, 17))
         self.label_8.setObjectName("label_8")
 
-
         self.lineEdit_4 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_4.setGeometry(QtCore.QRect(290, 80, 21, 20))
         self.lineEdit_4.setObjectName("lineEdit_4")
@@ -98,15 +100,18 @@ class Ui_MainWindow(object):
         self.pushButton2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton2.setGeometry(QtCore.QRect(400, 590, 75, 23))
 
+        self.progress = QtWidgets.QProgressBar(self.centralwidget)
+        self.progress.setGeometry(QtCore.QRect(250, 630, 500, 20))
+
         self.pushButton.setObjectName("pushButton")
-        MainWindow.setCentralWidget(self.centralwidget)
+        self.MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 631, 21))
         self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
+        self.MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        self.MainWindow.setStatusBar(self.statusbar)
         self.pushButton.clicked.connect(lambda: self.get_filters())
 
         self.retranslateUi(MainWindow)
@@ -115,11 +120,12 @@ class Ui_MainWindow(object):
         self.pushButton1.clicked.connect(lambda: self.m.next_plot())
         self.pushButton2.clicked.connect(lambda: self.m.back_plot())
         self.checkBox_4.clicked.connect(lambda: self.m.squares() if self.checkBox_4.isChecked() else self.m.unsquares())
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.checkBox.setText(_translate("MainWindow", "Time Filter"))
         self.checkBox_2.setText(_translate("MainWindow", "Date Filter"))
         self.checkBox_3.setText(_translate("MainWindow", "Location Filter"))
@@ -134,63 +140,92 @@ class Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "Paths number: "))
         self.label_8.setText(_translate("MainWindow", "0"))
 
-
-
-
-
         self.pushButton.setText(_translate("MainWindow", "OK"))
         self.pushButton1.setText(_translate("MainWindow", "Next"))
         self.pushButton2.setText(_translate("MainWindow", "Back"))
+
+        self.progress.hide()
         self.pushButton1.hide()
         self.pushButton2.hide()
 
     def get_filters(self):
         global set_of_coordinates
-        fil = {"f1": self.checkBox.checkState(), "f2": self.checkBox_2.checkState(),
-               "f3": self.checkBox_3.checkState(), "f4": self.checkBox_4.checkState()}
+        self.progress.show()
+        self.progress.setValue(0)
+        self.m.plot([])
+        self.checkBox.setDisabled(True)
+        self.checkBox_2.setDisabled(True)
+        self.checkBox_3.setDisabled(True)
+        self.checkBox_4.setDisabled(True)
+        self.pushButton.setDisabled(True)
+        self.pushButton1.setDisabled(True)
+        self.pushButton2.setDisabled(True)
+        self.lineEdit.setDisabled(True)
+        self.lineEdit_2.setDisabled(True)
+        self.lineEdit_3.setDisabled(True)
+        self.lineEdit_4.setDisabled(True)
+        self.dateEdit.setDisabled(True)
+        self.timeEdit.setDisabled(True)
+        self.timeEdit_2.setDisabled(True)
+        QtCore.QCoreApplication.processEvents()
+
         dr = {}
         s = {}
-        for filter_name, status in fil.items():
-            if status == 2:
-                if filter_name == "f1":
-                    s1 = str(self.timeEdit.text()) + ":00"
-                    s["start_time"] = s1
-                    s1 = str(self.timeEdit_2.text()) + ":00"
-                    s["end_time"] = s1
-                    dr["time_filter"] = s
-                elif filter_name == "f2":
-                    s["date"] = str(self.dateEdit.text())
-                    dr["date_filter"] = s
-                elif filter_name == "f3":
-                    s["x1"] = int(self.lineEdit.text())
-                    s["y1"] = int(self.lineEdit_2.text())
-                    s["x2"] = int(self.lineEdit_3.text())
-                    s["y2"] = int(self.lineEdit_4.text())
-                    dr["location_filter"] = s
-                elif filter_name == "f4":
-                    s['set_of_coordinates'] = set_of_coordinates
-                    dr['multi_location_filter'] = s
+        if self.checkBox.checkState() == 2:
+            s1 = str(self.timeEdit.text()) + ":00"
+            s["start_time"] = s1
+            s1 = str(self.timeEdit_2.text()) + ":00"
+            s["end_time"] = s1
+            dr["time_filter"] = s
+        if self.checkBox_2.checkState() == 2:
+            s["date"] = str(self.dateEdit.text())
+            dr["date_filter"] = s
+
+        if self.checkBox_3.checkState() == 2:
+            s["x1"] = int(self.lineEdit.text())
+            s["y1"] = int(self.lineEdit_2.text())
+            s["x2"] = int(self.lineEdit_3.text())
+            s["y2"] = int(self.lineEdit_4.text())
+            dr["location_filter"] = s
+        if self.checkBox_4.checkState() == 2:
+            s['set_of_coordinates'] = set_of_coordinates
+            dr['multi_location_filter'] = s
 
         print("Hiiiiiii!")
-        df=arguments_receiver_and_filter(dr)
-        self.m.plot(df)
-        self.label_8.setText(str(len(df.groupby(['filename', 'objectNum']).size())))
+        df = Arguments_Receiver_And_Filter(dr)
+        pool = ThreadPool(processes=4)
+        result = pool.apply_async(df.arguments_receiver_and_filter)
+        while not result.ready():
+            QtCore.QCoreApplication.processEvents()
+
+        dataframe = result.get()
+        x = len(dataframe.groupby(['filename', 'objectNum']).size())
+        t = time.time()
+        result = pool.apply_async(self.m.plot, (dataframe,))
+        while not result.ready():
+            self.progress.setValue((((time.time() - t) / 0.017) / x) * 100)
+            QtCore.QCoreApplication.processEvents()
+        print(time.time() - t)
+        self.progress.setValue(100)
+        self.label_8.setText(str(len(dataframe.groupby(['filename', 'objectNum']).size())))
         self.pushButton1.show()
         self.pushButton2.show()
         print("Byeeeeee!")
 
-
-def show_image(objs, df_by_obj):
-    imshow(bg, alpha=0.5)
-    for t, n in objs.iteritems():
-        o = df_by_obj.loc[t]
-        plt.plot(o.x, o.y)
-    plt.show()
-
-
-def plots(dataframe):
-    objs = dataframe.groupby(['filename', 'objectNum']).size()
-    show_image(objs, df_by_obj)
+        self.checkBox.setDisabled(False)
+        self.checkBox_2.setDisabled(False)
+        self.checkBox_3.setDisabled(False)
+        self.checkBox_4.setDisabled(False)
+        self.pushButton.setDisabled(False)
+        self.pushButton1.setDisabled(False)
+        self.pushButton2.setDisabled(False)
+        self.lineEdit.setDisabled(False)
+        self.lineEdit_2.setDisabled(False)
+        self.lineEdit_3.setDisabled(False)
+        self.lineEdit_4.setDisabled(False)
+        self.dateEdit.setDisabled(False)
+        self.timeEdit.setDisabled(False)
+        self.timeEdit_2.setDisabled(False)
 
 
 def start():
@@ -215,8 +250,6 @@ class PlotCanvas(FigureCanvas):
         self.plot(m)
         self.color = ['red', 'black', 'blue', 'brown', 'green']
 
-        # self.squares()
-
     def plot(self, pln):
         global df_by_obj, set_of_coordinates
         set_of_coordinates = set()
@@ -225,16 +258,19 @@ class PlotCanvas(FigureCanvas):
         ax.cla()
         ax.imshow(bg)
         ax.set_title('Hamada')
+
         if len(pln) > 0:
             self.objs = pln.groupby(['filename', 'objectNum']).size()
-
             for t, n in self.objs.iteritems():
+                tn = time.time()
                 o = df_by_obj.loc[t]
                 ax.plot(o.x, o.y)
+                print(time.time() - tn, "********************", len(o), "&&&&&&&&&&&&&&&")
+
         self.draw()
 
     def next_plot(self):
-        global df_by_obj
+        global df_by_obj, set_of_coordinates
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
@@ -305,9 +341,4 @@ class PlotCanvas(FigureCanvas):
                 s.append(0.02)
         ax = self.figure.add_subplot(111)
         ax.scatter(listx, listy, s=s, color='#0B38A9')
-
         self.draw()
-
-    def do_nothing(self, event):
-        print("nothings")
-        pass
