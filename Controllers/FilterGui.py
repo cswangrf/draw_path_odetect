@@ -1,5 +1,8 @@
 import sys
 
+from PyQt5.QtGui import QPixmap, QImage, QPalette, QBrush
+from PyQt5.QtWidgets import QLabel
+
 from settings import df_by_obj, bg, image_width, image_height, set_of_coordinates
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib.pyplot import imshow
@@ -7,6 +10,7 @@ from matplotlib import pyplot as plt, patches
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from Models.Filters import *
+from PyQt5.QtCore import QSize
 
 
 class Ui_MainWindow(object):
@@ -16,6 +20,13 @@ class Ui_MainWindow(object):
         MainWindow.resize(1000, 680)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        oImage = QImage("../oddetect.jpg")
+        sImage = oImage.scaled(QSize(1000, 680))
+        palette = QPalette()
+        palette.setBrush(10, QBrush(sImage))  # 10 = Windowrole
+        MainWindow.setPalette(palette)
+
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
         self.checkBox.setGeometry(QtCore.QRect(10, 20, 70, 17))
         self.checkBox.setObjectName("checkBox")
@@ -183,20 +194,23 @@ class PlotCanvas(FigureCanvas):
         self.p = -1
         self.plot(m)
         self.color = ['red', 'black', 'blue', 'brown', 'green']
-        self.mpl_connect('button_press_event', self.onclick)
+
         # self.squares()
 
     def plot(self, pln):
-        global df_by_obj
+        global df_by_obj, set_of_coordinates
+        set_of_coordinates = set()
         self.p = -1
-        self.objs = pln.groupby(['filename', 'objectNum']).size()
         ax = self.figure.add_subplot(111)
         ax.cla()
         ax.imshow(bg)
         ax.set_title('Hamada')
-        for t, n in self.objs.iteritems():
-            o = df_by_obj.loc[t]
-            ax.plot(o.x, o.y)
+        if len(pln) > 0:
+            self.objs = pln.groupby(['filename', 'objectNum']).size()
+
+            for t, n in self.objs.iteritems():
+                o = df_by_obj.loc[t]
+                ax.plot(o.x, o.y)
         self.draw()
 
     def next_plot(self):
@@ -230,6 +244,7 @@ class PlotCanvas(FigureCanvas):
         self.draw()
 
     def squares(self):
+        self.mpl_connect('button_press_event', self.onclick)
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
@@ -243,6 +258,7 @@ class PlotCanvas(FigureCanvas):
         self.draw()
 
     def unsquares(self):
+        self.mpl_disconnect(self.mpl_connect('button_press_event', self.onclick))
         global set_of_coordinates
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
@@ -252,9 +268,14 @@ class PlotCanvas(FigureCanvas):
         self.draw()
 
     def onclick(self, event):
+        global set_of_coordinates
         print(event.xdata, event.ydata)
         x1 = (int(event.xdata) // (image_width // 10)) * image_width // 10
         y1 = (int(event.ydata) // (image_height // 10)) * image_height // 10
         x2 = x1 + image_width // 10
         y2 = y1 + image_height // 10
         set_of_coordinates.add((x1, y1, x2, y2))
+
+    def do_nothing(self, event):
+        print("nothings")
+        pass

@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d6d6ff8-e382-4b1c-bd94-794229f84a50" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/FilterGui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/FilterGui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/UploadingFileController.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UploadingFileController.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Filters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Models/Filters.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="189" column="28" lean-forward="true" selection-start-line="189" selection-start-column="28" selection-end-line="189" selection-end-column="28" />
+            <state relative-caret-position="153">
+              <caret line="163" column="2" lean-forward="true" selection-start-line="163" selection-start-column="2" selection-end-line="163" selection-end-column="2" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -48,14 +47,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Controllers/FilterGui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="143" selection-start-line="143" selection-end-line="143" />
+            <state relative-caret-position="274">
+              <caret line="276" column="48" lean-forward="true" selection-start-line="276" selection-start-column="48" selection-end-line="276" selection-end-column="48" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Controllers/UploadingFileController.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="139">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
             </state>
           </provider>
         </entry>
@@ -96,19 +104,19 @@
         <option value="$PROJECT_DIR$/Controllers/main.py" />
         <option value="$PROJECT_DIR$/Views/Views.py" />
         <option value="$PROJECT_DIR$/Models/Fixer.py" />
-        <option value="$PROJECT_DIR$/Controllers/UploadingFileController.py" />
         <option value="$PROJECT_DIR$/Controllers/FiltersController.py" />
         <option value="$PROJECT_DIR$/example.py" />
         <option value="$PROJECT_DIR$/aa.py" />
         <option value="$PROJECT_DIR$/Test/test_filter.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/settings.py" />
-        <option value="$PROJECT_DIR$/Controllers/FilterGui.py" />
         <option value="$PROJECT_DIR$/Models/Filters.py" />
+        <option value="$PROJECT_DIR$/Controllers/UploadingFileController.py" />
+        <option value="$PROJECT_DIR$/Controllers/FilterGui.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="width" value="698" />
     <option name="height" value="372" />
@@ -349,7 +357,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25223213" />
@@ -357,8 +365,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.90699404" visible="true" weight="0.22385621" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.90699404" visible="true" weight="0.26143792" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39869282" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Version Control" order="6" />
@@ -453,13 +461,6 @@
     <entry file="file://$PROJECT_DIR$/Controllers/FiltersController.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controllers/UploadingFileController.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.virtualenvs/paths-project-wF6tqPxW/Lib/site-packages/pandas/util/_validators.py" />
     <entry file="file://$USER_HOME$/.virtualenvs/paths-project-wF6tqPxW/Lib/site-packages/pandas/core/frame.py" />
     <entry file="file://$USER_HOME$/.virtualenvs/paths-project-wF6tqPxW/Lib/site-packages/matplotlib/pyplot.py" />
@@ -484,22 +485,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controllers/FilterGui.py">
+    <entry file="file://$PROJECT_DIR$/Models/Filters.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="143" selection-start-line="143" selection-end-line="143" />
+        <state relative-caret-position="153">
+          <caret line="163" column="2" lean-forward="true" selection-start-line="163" selection-start-column="2" selection-end-line="163" selection-end-column="2" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Models/Filters.py">
+    <entry file="file://$PROJECT_DIR$/Controllers/UploadingFileController.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="189" column="28" lean-forward="true" selection-start-line="189" selection-start-column="28" selection-end-line="189" selection-end-column="28" />
+        <state relative-caret-position="139">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/matplotlib/cbook/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-31214">
+          <caret line="214" selection-start-line="214" selection-end-line="214" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controllers/FilterGui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="276" column="48" lean-forward="true" selection-start-line="276" selection-start-column="48" selection-end-line="276" selection-end-column="48" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>

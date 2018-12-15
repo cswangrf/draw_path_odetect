@@ -61,6 +61,7 @@ class UpdateData:
         main_win.geometry("500x500")
         main_win.source_path_file = ''
         main_win.source_picture_file = ''
+
         b_choose_path = Button(main_win, text="Chose Path File", width=20, height=3, command=self.choose_path)
         b_choose_path.place(x=100, y=50)
         b_choose_path.width = 100

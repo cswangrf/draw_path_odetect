@@ -148,7 +148,7 @@ class FilterByMultiLocation(AbstractDataFrameDecorator):
         if len(objs_list) > 0:
             decorated_df = df_by_obj.loc[objs_list]
         else:
-            decorated_df = main_df.head(0)
+            decorated_df = []
 
     def get_filter_name(self):
         print('Filter by multi location')
