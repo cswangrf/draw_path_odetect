@@ -1,6 +1,7 @@
 import pandas as pd
 import six
 from abc import ABCMeta
+from settings import df_by_obj
 
 main_df = pd.read_pickle('../data/paths.pkl.xz')
 decorated_df = main_df
@@ -64,7 +65,6 @@ class FilterByDateAndTime(AbstractDataFrameDecorator):
         decorated_df = decorated_df[decorated_df.time.dt.date == date_time1.date()]
         print(len(decorated_df), "*********1*********")
 
-
     def get_filter_name(self):
         print('Filter by date')
         return 'Filter by date'
@@ -114,6 +114,47 @@ class FilterByLocation(AbstractDataFrameDecorator):
         return 'Filter by location'
 
 
+class FilterByMultiLocation(AbstractDataFrameDecorator):
+    def __init__(self, decorated_data_frame, set_of_coordinate):
+        print("Filter by multi location constructor1")
+        AbstractDataFrameDecorator.__init__(self, decorated_data_frame)
+        print("Filter by multi location constructor2")
+        self.set_of_coordinate = set_of_coordinate
+        print("Filter by multi location constructor3")
+
+    def filter(self):
+        global decorated_df
+        indexes = set()
+        self.decorated_data_frame.filter()
+        print("ARE YOU GETTING HERE!")
+        for coordinate in self.set_of_coordinate:
+            print("ARE YOU ?!")
+            print(coordinate, type(coordinate[0]))
+            tmp_df = decorated_df
+            print(len(decorated_df))
+            tmp_df = tmp_df[((tmp_df.x >= coordinate[0]) & (tmp_df.x <= coordinate[2])) & (
+                    (tmp_df.y >= coordinate[1]) & (tmp_df.y <= coordinate[3]))]
+            objs = tmp_df.groupby(['filename', 'objectNum']).size()
+            print(objs)
+
+            for t, n in objs.iteritems():
+                print(t)
+                indexes.add(t)
+        print("ARE YOU GETTING HERE(2)!")
+        print(indexes, "Indexes")
+        objs_list = list(indexes)
+
+        print(objs_list)
+        if len(objs_list) > 0:
+            decorated_df = df_by_obj.loc[objs_list]
+        else:
+            decorated_df = main_df.head(0)
+
+    def get_filter_name(self):
+        print('Filter by multi location')
+        return 'Filter by multi location'
+
+
 def arguments_receiver_and_filter(argument_dictionary):
     print("im' here")
     concrete_data_frame = ConcreteDataFrame()
@@ -134,12 +175,17 @@ def arguments_receiver_and_filter(argument_dictionary):
             print(argument_dictionary[arg])
             p1_x = int(argument_dictionary[arg]['x1'])
             p1_y = int(argument_dictionary[arg]['y1'])
-
             p2_x = int(argument_dictionary[arg]['x2'])
             p2_y = int(argument_dictionary[arg]['y2'])
             print("coordiantes:", p1_x, p1_y, p2_x, p2_y)
             concrete_data_frame = FilterByLocation(concrete_data_frame, (p1_x, p1_y), (p2_x, p2_y))
             print(len(decorated_df))
+        if arg == 'multi_location_filter':
+            print(argument_dictionary[arg]['set_of_coordinates'], "*********************")
+            concrete_data_frame = FilterByMultiLocation(concrete_data_frame,
+                                                        argument_dictionary[arg]['set_of_coordinates'])
+            print("TTTTTTTTTTTTT")
+
     concrete_data_frame.filter()
     print(len(decorated_df))
     return decorated_df

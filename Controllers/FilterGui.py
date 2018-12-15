@@ -1,6 +1,6 @@
 import sys
 
-from settings import df_by_obj, bg
+from settings import df_by_obj, bg, image_width, image_height, set_of_coordinates
 from PyQt5 import QtCore, QtGui, QtWidgets
 from matplotlib.pyplot import imshow
 from matplotlib import pyplot as plt, patches
@@ -93,6 +93,7 @@ class Ui_MainWindow(object):
         self.m.move(150, 150)
         self.pushButton1.clicked.connect(lambda: self.m.next_plot())
         self.pushButton2.clicked.connect(lambda: self.m.back_plot())
+        self.checkBox_4.clicked.connect(lambda: self.m.squares() if self.checkBox_4.isChecked() else self.m.unsquares())
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -115,6 +116,7 @@ class Ui_MainWindow(object):
         self.pushButton2.hide()
 
     def get_filters(self):
+        global set_of_coordinates
         fil = {"f1": self.checkBox.checkState(), "f2": self.checkBox_2.checkState(),
                "f3": self.checkBox_3.checkState(), "f4": self.checkBox_4.checkState()}
         dr = {}
@@ -136,6 +138,9 @@ class Ui_MainWindow(object):
                     s["x2"] = int(self.lineEdit_3.text())
                     s["y2"] = int(self.lineEdit_4.text())
                     dr["location_filter"] = s
+                elif filter_name == "f4":
+                    s['set_of_coordinates'] = set_of_coordinates
+                    dr['multi_location_filter'] = s
 
         print("Hiiiiiii!")
         self.m.plot(arguments_receiver_and_filter(dr))
@@ -178,6 +183,7 @@ class PlotCanvas(FigureCanvas):
         self.p = -1
         self.plot(m)
         self.color = ['red', 'black', 'blue', 'brown', 'green']
+        self.mpl_connect('button_press_event', self.onclick)
         # self.squares()
 
     def plot(self, pln):
@@ -205,6 +211,7 @@ class PlotCanvas(FigureCanvas):
         print(self.objs.index[self.p], "8888888888888888")
         o = df_by_obj.loc[self.objs.index[self.p]]
         ax.plot(o.x, o.y, color=self.color[self.p % 5])
+        set_of_coordinates = set()
         self.draw()
         print(len(self.objs))
 
@@ -227,7 +234,27 @@ class PlotCanvas(FigureCanvas):
         ax.set_title('Hamada')
         ax.cla()
         ax.imshow(bg)
-        ax.add_patch(patches.Rectangle((50,100),40,30,linewidth=1,edgecolor='r',facecolor='none'))
-        ax.show()
+        print("*******************************************************8")
+        for x1 in range(0, image_width, image_width // 10):
+            for y1 in range(0, image_height, image_height // 10):
+                ax.add_patch(
+                    patches.Rectangle((x1, y1), image_width // 10, image_height // 10, linewidth=0.1, edgecolor='r',
+                                      facecolor='none'))
+        self.draw()
 
+    def unsquares(self):
+        global set_of_coordinates
+        ax = self.figure.add_subplot(111)
+        ax.set_title('Hamada')
+        ax.cla()
+        ax.imshow(bg)
+        set_of_coordinates = set()
+        self.draw()
 
+    def onclick(self, event):
+        print(event.xdata, event.ydata)
+        x1 = (int(event.xdata) // (image_width // 10)) * image_width // 10
+        y1 = (int(event.ydata) // (image_height // 10)) * image_height // 10
+        x2 = x1 + image_width // 10
+        y2 = y1 + image_height // 10
+        set_of_coordinates.add((x1, y1, x2, y2))
