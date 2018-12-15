@@ -1,14 +1,10 @@
 import sys
-# from threading import Thread
 import time
 from multiprocessing.pool import ThreadPool
-from PyQt5.QtGui import QPixmap, QImage, QPalette, QBrush
-from PyQt5.QtWidgets import QLabel
-
-from settings import df_by_obj, bg, image_width, image_height, set_of_coordinates
-from PyQt5 import QtCore, QtGui, QtWidgets
-from matplotlib.pyplot import imshow
-from matplotlib import pyplot as plt, patches
+from PyQt5.QtGui import QImage, QPalette, QBrush
+import settings
+from PyQt5 import QtCore, QtWidgets
+from matplotlib import patches
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from Models.Filters import *
@@ -149,7 +145,7 @@ class Ui_MainWindow(object):
         self.pushButton2.hide()
 
     def get_filters(self):
-        global set_of_coordinates
+
         self.progress.show()
         self.progress.setValue(0)
         self.m.plot([])
@@ -188,7 +184,7 @@ class Ui_MainWindow(object):
             s["y2"] = int(self.lineEdit_4.text())
             dr["location_filter"] = s
         if self.checkBox_4.checkState() == 2:
-            s['set_of_coordinates'] = set_of_coordinates
+            s['set_of_coordinates'] = settings.set_of_coordinates
             dr['multi_location_filter'] = s
 
         print("Hiiiiiii!")
@@ -226,7 +222,7 @@ class Ui_MainWindow(object):
         self.dateEdit.setDisabled(False)
         self.timeEdit.setDisabled(False)
         self.timeEdit_2.setDisabled(False)
-
+        settings.set_of_coordinates = set()
 
 def start():
     app = QtWidgets.QApplication(sys.argv)
@@ -251,51 +247,48 @@ class PlotCanvas(FigureCanvas):
         self.color = ['red', 'black', 'blue', 'brown', 'green']
 
     def plot(self, pln):
-        global df_by_obj, set_of_coordinates
-        set_of_coordinates = set()
+
         self.p = -1
         ax = self.figure.add_subplot(111)
         ax.cla()
-        ax.imshow(bg)
+        ax.imshow(settings.bg)
         ax.set_title('Hamada')
-
+        print('xzzzzzzzzzzzzzzzz')
         if len(pln) > 0:
             self.objs = pln.groupby(['filename', 'objectNum']).size()
             for t, n in self.objs.iteritems():
                 tn = time.time()
-                o = df_by_obj.loc[t]
+                o = settings.df_by_obj.loc[t]
                 ax.plot(o.x, o.y)
                 print(time.time() - tn, "********************", len(o), "&&&&&&&&&&&&&&&")
 
         self.draw()
 
     def next_plot(self):
-        global df_by_obj, set_of_coordinates
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(bg)
+        ax.imshow(settings.bg)
         if self.p == len(self.objs) - 1:
             self.p = self.p % (len(self.objs) - 1) - 1
         self.p += 1
         print(self.objs.index[self.p], "8888888888888888")
-        o = df_by_obj.loc[self.objs.index[self.p]]
+        o = settings.df_by_obj.loc[self.objs.index[self.p]]
         ax.plot(o.x, o.y, color=self.color[self.p % 5])
-        set_of_coordinates = set()
+
         self.draw()
         print(len(self.objs))
 
     def back_plot(self):
-        global df_by_obj
         if self.p == -1 or self.p == 0:
             self.p = len(self.objs)
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(bg)
+        ax.imshow(settings.bg)
         self.p -= 1
         print(self.objs.index[self.p], "8888888888888888")
-        o = df_by_obj.loc[self.objs.index[self.p]]
+        o = settings.df_by_obj.loc[self.objs.index[self.p]]
         ax.plot(o.x, o.y, color=self.color[self.p % 5])
         self.draw()
 
@@ -304,36 +297,35 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(bg)
+        ax.imshow(settings.bg)
         print("*******************************************************8")
-        for x1 in range(0, image_width, image_width // 10):
-            for y1 in range(0, image_height, image_height // 10):
+        for x1 in range(0, settings.image_width, settings.image_width // 10):
+            for y1 in range(0, settings.image_height, settings.image_height // 10):
                 ax.add_patch(
-                    patches.Rectangle((x1, y1), image_width // 10, image_height // 10, linewidth=0.1, edgecolor='r',
+                    patches.Rectangle((x1, y1), settings.image_width // 10, settings.image_height // 10, linewidth=0.1, edgecolor='r',
                                       facecolor='none'))
         self.draw()
 
     def unsquares(self):
         self.mpl_disconnect(self.mpl_connect('button_press_event', self.onclick))
-        global set_of_coordinates
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(bg)
-        set_of_coordinates = set()
+        ax.imshow(settings.bg)
         self.draw()
+        settings.set_of_coordinates =set()
 
     def onclick(self, event):
-        global set_of_coordinates
         print(event.xdata, event.ydata)
-        x1 = (int(event.xdata) // (image_width // 10)) * image_width // 10
-        y1 = (int(event.ydata) // (image_height // 10)) * image_height // 10
-        x2 = x1 + image_width // 10
-        y2 = y1 + image_height // 10
-        set_of_coordinates.add((x1, y1, x2, y2))
+        x1 = (int(event.xdata) // (settings.image_width // 10)) * settings.image_width // 10
+        y1 = (int(event.ydata) // (settings.image_height // 10)) * settings.image_height // 10
+        x2 = x1 + settings.image_width // 10
+        y2 = y1 + settings.image_height // 10
+        settings.set_of_coordinates.add((x1, y1, x2, y2))
         listx = []
         listy = []
         s = []
+        print(settings.set_of_coordinates)
         for x in range(x1, x2 + 1, 4):
             for y in range(y1, y2 + 1, 4):
                 listx.append(x)

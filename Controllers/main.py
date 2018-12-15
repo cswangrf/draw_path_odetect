@@ -1,11 +1,15 @@
-from Controllers.UploadingFileController import UpdateData
+import Views.TkView as Gui
 
 
-# main function: our project start here
+class Controls(object):
+    def onclick(self):
+        pass
+
+
 def main():
     print("python main function")
-    ud = UpdateData()
-    ud.building_upload_gui()
+    gui_controls = Controls()
+    gui = Gui.Userinterface(gui_controls)
 
 
 if __name__ == '__main__':

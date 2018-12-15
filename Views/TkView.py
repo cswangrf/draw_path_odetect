@@ -1,19 +1,21 @@
 import threading
-import tkinter
-from time import sleep
-from tkinter.ttk import Progressbar
-from Controllers import FilterGui
+from Views import pyQt5View
 from Models.Fixer import Fixer
-from Controllers.FiltersController import *
-from Views.Views import *
 from tkinter import *
 from tkinter import filedialog, ttk
 
 
-class UpdateData:
+def show_uploading_gui(window):
+    window.mainloop()
+    print(window.source_picture_file, window.source_path_file)
 
-    def __init__(self):
-        print("Start UpdateData")
+
+class Userinterface:
+
+    def __init__(self, controller):
+        self.controller = controller
+        print("Userinterface")
+        self.building_upload_gui()
 
     def choose_path(self):
         # TODO: check if the file is CSV
@@ -30,7 +32,7 @@ class UpdateData:
         # TODO: send file to the models to build the needed CSV OR Data Base
         # ToDO: receive data after all the changes,
         main_win.destroy()
-        FilterGui.start()
+        pyQt5View.start()
 
     def get_file_from_user(self):
         progress = ttk.Progressbar(main_win, length=500)
@@ -43,8 +45,6 @@ class UpdateData:
             main_win.update()
         progress['value'] = 100
         self.build_data_base_controller()
-
-
 
     def building_upload_gui(self):
         global main_win

@@ -127,6 +127,7 @@ class FilterByMultiLocation(AbstractDataFrameDecorator):
         indexes = set()
         self.decorated_data_frame.filter()
         print("ARE YOU GETTING HERE!")
+
         for coordinate in self.set_of_coordinate:
             print("ARE YOU ?!")
             print(coordinate, type(coordinate[0]))
