@@ -1,4 +1,3 @@
-data
 Pipfile
 data/fixed.csv
 data/oddetect.csv
@@ -7,3 +6,4 @@ data/sample.csv
 example.py
 aa.py
 PyQt5.ui
+.idea
