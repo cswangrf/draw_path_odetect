@@ -75,6 +75,16 @@ class Ui_MainWindow(object):
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
         self.label_6.setGeometry(QtCore.QRect(270, 80, 21, 16))
         self.label_6.setObjectName("label_6")
+
+        self.label_7 = QtWidgets.QLabel(self.centralwidget)
+        self.label_7.setGeometry(QtCore.QRect(400, 110, 111, 17))
+        self.label_7.setObjectName("label_7")
+
+        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        self.label_8.setGeometry(QtCore.QRect(500, 110, 111, 17))
+        self.label_8.setObjectName("label_8")
+
+
         self.lineEdit_4 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_4.setGeometry(QtCore.QRect(290, 80, 21, 20))
         self.lineEdit_4.setObjectName("lineEdit_4")
@@ -120,6 +130,14 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Y1"))
         self.label_5.setText(_translate("MainWindow", "X2"))
         self.label_6.setText(_translate("MainWindow", "Y2"))
+
+        self.label_7.setText(_translate("MainWindow", "Paths number: "))
+        self.label_8.setText(_translate("MainWindow", "0"))
+
+
+
+
+
         self.pushButton.setText(_translate("MainWindow", "OK"))
         self.pushButton1.setText(_translate("MainWindow", "Next"))
         self.pushButton2.setText(_translate("MainWindow", "Back"))
@@ -154,7 +172,9 @@ class Ui_MainWindow(object):
                     dr['multi_location_filter'] = s
 
         print("Hiiiiiii!")
-        self.m.plot(arguments_receiver_and_filter(dr))
+        df=arguments_receiver_and_filter(dr)
+        self.m.plot(df)
+        self.label_8.setText(str(len(df.groupby(['filename', 'objectNum']).size())))
         self.pushButton1.show()
         self.pushButton2.show()
         print("Byeeeeee!")
@@ -275,6 +295,18 @@ class PlotCanvas(FigureCanvas):
         x2 = x1 + image_width // 10
         y2 = y1 + image_height // 10
         set_of_coordinates.add((x1, y1, x2, y2))
+        listx = []
+        listy = []
+        s = []
+        for x in range(x1, x2 + 1, 4):
+            for y in range(y1, y2 + 1, 4):
+                listx.append(x)
+                listy.append(y)
+                s.append(0.02)
+        ax = self.figure.add_subplot(111)
+        ax.scatter(listx, listy, s=s, color='#0B38A9')
+
+        self.draw()
 
     def do_nothing(self, event):
         print("nothings")
