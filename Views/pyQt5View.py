@@ -252,7 +252,7 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.cla()
         ax.imshow(settings.im.bg)
-        ax.set_title('Hamada')
+        ax.set_title('Draw Paths')
         print('xzzzzzzzzzzzzzzzz')
         if len(pln) > 0:
             self.objs = pln.groupby(['filename', 'objectNum']).size()
@@ -266,7 +266,7 @@ class PlotCanvas(FigureCanvas):
 
     def next_plot(self):
         ax = self.figure.add_subplot(111)
-        ax.set_title('Hamada')
+        ax.set_title('Draw Paths')
         ax.cla()
         ax.imshow(settings.im.bg)
         if self.p == len(self.objs) - 1:
@@ -283,7 +283,7 @@ class PlotCanvas(FigureCanvas):
         if self.p == -1 or self.p == 0:
             self.p = len(self.objs)
         ax = self.figure.add_subplot(111)
-        ax.set_title('Hamada')
+        ax.set_title('Draw Paths')
         ax.cla()
         ax.imshow(settings.im.bg)
         self.p -= 1
@@ -295,7 +295,7 @@ class PlotCanvas(FigureCanvas):
     def squares(self):
         self.mpl_connect('button_press_event', self.onclick)
         ax = self.figure.add_subplot(111)
-        ax.set_title('Hamada')
+        ax.set_title('Draw Paths')
         ax.cla()
         ax.imshow(settings.im.bg)
         print("*******************************************************8")
@@ -309,7 +309,7 @@ class PlotCanvas(FigureCanvas):
     def unsquares(self):
         self.mpl_disconnect(self.mpl_connect('button_press_event', self.onclick))
         ax = self.figure.add_subplot(111)
-        ax.set_title('Hamada')
+        ax.set_title('Draw Paths')
         ax.cla()
         ax.imshow(settings.im.bg)
         self.draw()
