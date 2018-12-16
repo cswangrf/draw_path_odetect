@@ -22,13 +22,13 @@ class Userinterface:
         main_win.source_path_file = filedialog.askopenfilename(parent=main_win, initialdir="/",
                                                                title='Please select a CSV file',
                                                                filetypes=(
-                                                               ("csv files", "*.csv"), ("all files", "*.xlsx")))
+                                                                   ("csv files", "*.csv"), ("all files", "*.xlsx")))
 
     def choose_picture(self):
         main_win.source_picture_file = filedialog.askopenfilename(parent=main_win, initialdir="/",
                                                                   title='Please select a Picture',
                                                                   filetypes=(
-                                                                  ("jpeg files", "*.jpg"), ("png files", "*.png")))
+                                                                      ("jpeg files", "*.jpg"), ("png files", "*.png")))
 
     # Send new file to the models Receive
     def build_data_base_controller(self):
