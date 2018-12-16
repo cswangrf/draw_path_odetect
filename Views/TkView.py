@@ -39,7 +39,7 @@ class Userinterface:
 
     def get_file_from_user(self):
         progress = ttk.Progressbar(main_win, length=500)
-        progress.place(x=0, y=350)
+        progress.place(x=0, y=450)
         if main_win.source_picture_file != "":
             print(main_win.source_picture_file)
             im.set_img(main_win.source_picture_file)

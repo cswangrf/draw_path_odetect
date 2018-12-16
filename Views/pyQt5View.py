@@ -115,7 +115,8 @@ class Ui_MainWindow(object):
         self.m.move(150, 150)
         self.pushButton1.clicked.connect(lambda: self.m.next_plot())
         self.pushButton2.clicked.connect(lambda: self.m.back_plot())
-        self.checkBox_4.clicked.connect(lambda: self.m.squares() if self.checkBox_4.isChecked() else self.m.unsquares())
+        self.checkBox_4.clicked.connect(
+            lambda: self.m.squares() if self.checkBox_4.isChecked() else self.m.remove_squares())
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -195,6 +196,7 @@ class Ui_MainWindow(object):
             QtCore.QCoreApplication.processEvents()
 
         dataframe = result.get()
+        self.label_8.setText(str(len(dataframe.groupby(['filename', 'objectNum']).size())))
         x = len(dataframe.groupby(['filename', 'objectNum']).size())
         t = time.time()
         result = pool.apply_async(self.m.plot, (dataframe,))
@@ -203,7 +205,6 @@ class Ui_MainWindow(object):
             QtCore.QCoreApplication.processEvents()
         print(time.time() - t)
         self.progress.setValue(100)
-        self.label_8.setText(str(len(dataframe.groupby(['filename', 'objectNum']).size())))
         self.pushButton1.show()
         self.pushButton2.show()
         print("Byeeeeee!")
@@ -296,19 +297,21 @@ class PlotCanvas(FigureCanvas):
     def squares(self):
         self.mpl_connect('button_press_event', self.onclick)
         ax = self.figure.add_subplot(111)
+
         ax.set_title('Draw Paths')
         ax.cla()
         ax.imshow(settings.im.bg)
         print("*******************************************************8")
         for x1 in range(0, settings.im.image_width, settings.im.image_width // 10):
-            for y1 in range(0, settings.im.image_height, settings.im.image_height // 10):
+            for y1 in range(0, settings.im.image_height,
+                            settings.im.image_height // 10):
                 ax.add_patch(
-                    patches.Rectangle((x1, y1), settings.im.image_width // 10, settings.im.image_height // 10,
+                    patches.Rectangle((x1, y1), settings.im.image_width // 10 -1, settings.im.image_height // 10 -1,
                                       linewidth=0.1, edgecolor='r',
                                       facecolor='none'))
         self.draw()
 
-    def unsquares(self):
+    def remove_squares(self):
         self.mpl_disconnect(self.mpl_connect('button_press_event', self.onclick))
         ax = self.figure.add_subplot(111)
         ax.set_title('Draw Paths')
@@ -328,11 +331,12 @@ class PlotCanvas(FigureCanvas):
         listy = []
         s = []
         print(settings.set_of_coordinates)
-        for x in range(x1, x2 + 1, 4):
-            for y in range(y1, y2 + 1, 4):
+        for x in range(x1, x2, 4):
+            for y in range(y1, y2, 4):
                 listx.append(x)
                 listy.append(y)
                 s.append(0.02)
+
         ax = self.figure.add_subplot(111)
         ax.scatter(listx, listy, s=s, color='#0B38A9')
         self.draw()
