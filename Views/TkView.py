@@ -38,10 +38,11 @@ class Userinterface:
         pyQt5View.start()
 
     def get_file_from_user(self):
-        im.set_img(main_win.source_picture_file)
         progress = ttk.Progressbar(main_win, length=500)
         progress.place(x=0, y=350)
-        im.set_img(main_win.source_picture_file)
+        if main_win.source_picture_file != "":
+            print(main_win.source_picture_file)
+            im.set_img(main_win.source_picture_file)
         if main_win.source_path_file != "":
             n = Fixer(main_win.source_path_file)
             f = threading.Thread(target=n.fix_file)

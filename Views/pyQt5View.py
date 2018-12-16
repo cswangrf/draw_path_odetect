@@ -224,6 +224,7 @@ class Ui_MainWindow(object):
         self.timeEdit_2.setDisabled(False)
         settings.set_of_coordinates = set()
 
+
 def start():
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
@@ -302,7 +303,8 @@ class PlotCanvas(FigureCanvas):
         for x1 in range(0, settings.im.image_width, settings.im.image_width // 10):
             for y1 in range(0, settings.im.image_height, settings.im.image_height // 10):
                 ax.add_patch(
-                    patches.Rectangle((x1, y1), settings.im.image_width // 10, settings.im.image_height // 10, linewidth=0.1, edgecolor='r',
+                    patches.Rectangle((x1, y1), settings.im.image_width // 10, settings.im.image_height // 10,
+                                      linewidth=0.1, edgecolor='r',
                                       facecolor='none'))
         self.draw()
 
@@ -313,7 +315,7 @@ class PlotCanvas(FigureCanvas):
         ax.cla()
         ax.imshow(settings.im.bg)
         self.draw()
-        settings.set_of_coordinates =set()
+        settings.set_of_coordinates = set()
 
     def onclick(self, event):
         print(event.xdata, event.ydata)
