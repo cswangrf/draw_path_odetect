@@ -251,7 +251,7 @@ class PlotCanvas(FigureCanvas):
         self.p = -1
         ax = self.figure.add_subplot(111)
         ax.cla()
-        ax.imshow(settings.bg)
+        ax.imshow(settings.im.bg)
         ax.set_title('Hamada')
         print('xzzzzzzzzzzzzzzzz')
         if len(pln) > 0:
@@ -268,7 +268,7 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(settings.bg)
+        ax.imshow(settings.im.bg)
         if self.p == len(self.objs) - 1:
             self.p = self.p % (len(self.objs) - 1) - 1
         self.p += 1
@@ -285,7 +285,7 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(settings.bg)
+        ax.imshow(settings.im.bg)
         self.p -= 1
         print(self.objs.index[self.p], "8888888888888888")
         o = settings.df_by_obj.loc[self.objs.index[self.p]]
@@ -297,12 +297,12 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(settings.bg)
+        ax.imshow(settings.im.bg)
         print("*******************************************************8")
-        for x1 in range(0, settings.image_width, settings.image_width // 10):
-            for y1 in range(0, settings.image_height, settings.image_height // 10):
+        for x1 in range(0, settings.im.image_width, settings.im.image_width // 10):
+            for y1 in range(0, settings.im.image_height, settings.im.image_height // 10):
                 ax.add_patch(
-                    patches.Rectangle((x1, y1), settings.image_width // 10, settings.image_height // 10, linewidth=0.1, edgecolor='r',
+                    patches.Rectangle((x1, y1), settings.im.image_width // 10, settings.im.image_height // 10, linewidth=0.1, edgecolor='r',
                                       facecolor='none'))
         self.draw()
 
@@ -311,16 +311,16 @@ class PlotCanvas(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.set_title('Hamada')
         ax.cla()
-        ax.imshow(settings.bg)
+        ax.imshow(settings.im.bg)
         self.draw()
         settings.set_of_coordinates =set()
 
     def onclick(self, event):
         print(event.xdata, event.ydata)
-        x1 = (int(event.xdata) // (settings.image_width // 10)) * settings.image_width // 10
-        y1 = (int(event.ydata) // (settings.image_height // 10)) * settings.image_height // 10
-        x2 = x1 + settings.image_width // 10
-        y2 = y1 + settings.image_height // 10
+        x1 = (int(event.xdata) // (settings.im.image_width // 10)) * settings.im.image_width // 10
+        y1 = (int(event.ydata) // (settings.im.image_height // 10)) * settings.im.image_height // 10
+        x2 = x1 + settings.im.image_width // 10
+        y2 = y1 + settings.im.image_height // 10
         settings.set_of_coordinates.add((x1, y1, x2, y2))
         listx = []
         listy = []

@@ -3,7 +3,7 @@ from Views import pyQt5View
 from Models.Fixer import Fixer
 from tkinter import *
 from tkinter import filedialog, ttk
-
+from settings import  im
 
 def show_uploading_gui(window):
     window.mainloop()
@@ -17,16 +17,17 @@ class Userinterface:
         print("Userinterface")
         self.building_upload_gui()
 
+
     def choose_path(self):
-        # TODO: check if the file is CSV
         main_win.source_path_file = filedialog.askopenfilename(parent=main_win, initialdir="/",
-                                                               title='Please select a CSV file')
+                                                               title='Please select a CSV file',
+                                                               filetypes=(("csv files", "*.csv"),("all files", "*.xlsx")))
+
 
     def choose_picture(self):
-        # TODO: check if the file is picture
         main_win.source_picture_file = filedialog.askopenfilename(parent=main_win, initialdir="/",
-                                                                  title='Please select a Picture')
-
+                                                                  title='Please select a Picture',
+                                                                  filetypes=(("jpeg files", "*.jpg"), ("png files", "*.png")))
     # Send new file to the models Receive
     def build_data_base_controller(self):
         # TODO: send file to the models to build the needed CSV OR Data Base
@@ -35,6 +36,7 @@ class Userinterface:
         pyQt5View.start()
 
     def get_file_from_user(self):
+        im.set_img(main_win.source_picture_file)
         progress = ttk.Progressbar(main_win, length=500)
         progress.place(x=0, y=350)
         n = Fixer(main_win.source_path_file)
