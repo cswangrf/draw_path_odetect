@@ -1,9 +1,2 @@
 Pipfile
-data/fixed.csv
-data/oddetect.csv
-data/sample.csv
-data/paths.h5
-example.py
-aa.py
-PyQt5.ui
 .idea
