@@ -17,12 +17,13 @@ Their is 4 main filters that the user want to analyze the paths by using them:
     The user can choose more than one filter in the same time.
     the user can see all of the paths he want in the same time or he can see each path alone.  
 
-## Getting Started
+## Getting Started / Installation
 
-To Start this project in your machine you need to 
-install in the project package these environment:
+python packages we have used:
 
 pandas , matplotlib , pyQt5 , tkinter
+
+## How to run
 
 To run the project for development and testing purposes
  you need to run the main file. 
