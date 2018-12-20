@@ -21,7 +21,7 @@ Their is 4 main filters that the user want to analyze the paths by using them:
 
 python packages we have used:
 
-pandas , matplotlib , pyQt5 , tkinter
+pandas , matplotlib , pyQt5 , tkinter, six, abc
 
 ## How to run
 
