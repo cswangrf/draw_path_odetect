@@ -196,12 +196,14 @@ class Ui_MainWindow(object):
             QtCore.QCoreApplication.processEvents()
 
         dataframe = result.get()
+
         self.label_8.setText(str(len(dataframe.groupby(['filename', 'objectNum']).size())))
-        x = len(dataframe.groupby(['filename', 'objectNum']).size())
+        x = len(dataframe.groupby(['filename', 'objectNum']).size()) +1
         t = time.time()
+
         result = pool.apply_async(self.m.plot, (dataframe,))
         while not result.ready():
-            self.progress.setValue((((time.time() - t) / 0.017) / x) * 100)
+            self.progress.setValue((((time.time() - t) / 0.011) / x) * 100)
             QtCore.QCoreApplication.processEvents()
         print(time.time() - t)
         self.progress.setValue(100)
@@ -255,7 +257,7 @@ class PlotCanvas(FigureCanvas):
         ax.cla()
         ax.imshow(settings.im.bg)
         ax.set_title('Draw Paths')
-        print('xzzzzzzzzzzzzzzzz')
+        print(len(pln),"omair")
         if len(pln) > 0:
             self.objs = pln.groupby(['filename', 'objectNum']).size()
             for t, n in self.objs.iteritems():
