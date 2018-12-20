@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4d6d6ff8-e382-4b1c-bd94-794229f84a50" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Views/pyQt5View.py" beforeDir="false" afterPath="$PROJECT_DIR$/Views/pyQt5View.py" afterDir="false" />
-    </list>
+    <list default="true" id="4d6d6ff8-e382-4b1c-bd94-794229f84a50" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,8 +76,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Views/pyQt5View.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="201" column="23" lean-forward="true" selection-start-line="201" selection-start-column="23" selection-end-line="201" selection-end-column="23" />
+            <state relative-caret-position="154">
+              <caret line="201" column="23" selection-start-line="201" selection-start-column="23" selection-end-line="201" selection-end-column="23" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -159,9 +157,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="524" />
-    <option name="y" value="260" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="375" />
+    <option name="y" value="177" />
     <option name="width" value="697" />
     <option name="height" value="371" />
   </component>
@@ -188,6 +186,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -213,13 +212,17 @@
             <path>
               <item name="excellenteam-erez-python-paths-team-aako" type="b2602c69:ProjectViewProjectNode" />
               <item name="excellenteam-erez-python-paths-team-aako" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="excellenteam-erez-python-paths-team-aako" type="b2602c69:ProjectViewProjectNode" />
+              <item name="excellenteam-erez-python-paths-team-aako" type="462c0819:PsiDirectoryNode" />
               <item name="Views" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -421,10 +424,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="375" y="177" width="697" height="371" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2061012" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20485584" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -475,13 +477,7 @@
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/threading.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2018.2/system/python_stubs/-2089992605/PyQt5/QtWidgets/QDialogButtonBox.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/tkinter/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/picture_src.qrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/picture_src.qrc" />
     <entry file="file://$PROJECT_DIR$/example.py" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
@@ -509,9 +505,7 @@
     <entry file="file://$PROJECT_DIR$/Controllers/UploadingFileController.py" />
     <entry file="file://$PROJECT_DIR$/Controllers/FilterGui.py" />
     <entry file="file://$PROJECT_DIR$/resources.py" />
-    <entry file="file://$PROJECT_DIR$/Models/ImageProcessing.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Models/ImageProcessing.py" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -580,8 +574,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Views/pyQt5View.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="201" column="23" lean-forward="true" selection-start-line="201" selection-start-column="23" selection-end-line="201" selection-end-column="23" />
+        <state relative-caret-position="154">
+          <caret line="201" column="23" selection-start-line="201" selection-start-column="23" selection-end-line="201" selection-end-column="23" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
