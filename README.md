@@ -41,4 +41,4 @@ connecting between the Views and Models.
 
     Also their is a file (settings.py) is very important to optimize the filtering process
  
- #####For handling several filters we used decorator design pattern
+ ####For handling several filters we used decorator design pattern
